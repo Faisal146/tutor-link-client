@@ -1,6 +1,6 @@
 # TutorLink Frontend
 
-# Live Link - https://tutor-link-tawny.vercel.app/tutor/
+# Live Link - https://tutor-link-tawny.vercel.app/
 
 ## 🎓 Find & Connect with the Best Tutors
 
