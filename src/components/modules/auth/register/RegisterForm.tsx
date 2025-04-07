@@ -29,7 +29,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registrationSchema } from "./registerValidation";
 import { registerUser } from "@/services/AuthService";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const form = useForm({
@@ -43,14 +42,15 @@ export default function RegisterPage() {
   const password = form.watch("password");
   const passwordConfirm = form.watch("passwordConfirm");
   //   console.log(password, passwordConfirm);
-  const router = useRouter();
+  // const router = useRouter();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const res = await registerUser(data);
       if (res?.success) {
         toast.success(res?.message);
-        router.push("/");
+
+        window.location.href = "/";
       } else {
         toast.error(res?.message);
       }

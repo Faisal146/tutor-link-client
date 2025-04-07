@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Swift Mart",
-  description: "Shop with your passion",
+  title: "Tutor Link",
+  description: "Find best tutors",
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
     <Providers>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.className} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <Toaster richColors position="top-center" />
           {children}

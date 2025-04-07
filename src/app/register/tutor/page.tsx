@@ -34,6 +34,11 @@ import { GraduationCap } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import ImagePreviewer from "@/components/ui/core/TLImageUploader/ImagePreviewer";
 import TLImageUploader from "@/components/ui/core/TLImageUploader";
+import { useUser } from "@/context/UserContext";
+import { toast } from "sonner";
+import { createTutor } from "@/services/tutor";
+import { useRouter } from "next/navigation";
+import { logout } from "@/services/AuthService";
 
 // Form Schema
 const formSchema = z.object({
@@ -77,10 +82,10 @@ const educationLevels = [
 ];
 
 export default function TutorRegisterPage() {
-  const [isLoading, setIsLoading] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
-
+  const { setIsLoading } = useUser();
+  const router = useRouter();
   // React-Hook-Form Setup
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -99,18 +104,39 @@ export default function TutorRegisterPage() {
     },
   });
 
+  const {
+    formState: { isSubmitting },
+  } = form;
+
   // Form Submit Handler
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     console.log("hello world");
     console.log("Form Data:", data);
     console.log("image Data:", imageFiles);
 
-    setIsLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(data));
+      formData.append("image", imageFiles[0] as File);
 
-    setTimeout(() => {
-      console.log("Form submitted successfully");
-      setIsLoading(false);
-    }, 1000);
+      const res = await createTutor(formData);
+
+      console.log(res);
+
+      if (res.success) {
+        toast.success(
+          `${res.message}. Please login again since you become a tutor`
+        );
+        logout();
+        setIsLoading(true);
+        router.push("/login");
+      } else {
+        toast.error(res.message);
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+      console.error(err);
+    }
   };
 
   return (
@@ -365,8 +391,12 @@ export default function TutorRegisterPage() {
                 )}
               </CardContent>
               <CardFooter>
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting
                     ? "Creating your profile..."
                     : "Create Tutor Profile"}
                 </Button>

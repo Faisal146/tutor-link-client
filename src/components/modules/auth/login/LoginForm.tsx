@@ -15,7 +15,7 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -37,7 +37,7 @@ export default function LoginForm() {
 
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirectPath");
-  const router = useRouter();
+  // const router = useRouter();
 
   const {
     formState: { isSubmitting },
@@ -60,9 +60,9 @@ export default function LoginForm() {
       if (res?.success) {
         toast.success(res?.message);
         if (redirect) {
-          router.push(redirect);
+          window.location.href = redirect;
         } else {
-          router.push("/");
+          window.location.href = "/";
         }
       } else {
         toast.error(res?.message);

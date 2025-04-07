@@ -5,7 +5,6 @@ import { Trash } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ITutor, ITutorAvailability } from "@/types";
-import { deleteBrand } from "@/services/Brand";
 import DeleteConfirmationModal from "@/components/ui/core/NMModal/DeleteConfirmationModal";
 import CreateAvailabilityModal from "./CreateAvailabilityModel";
 import { deleteAvailability } from "@/services/availability";

@@ -1,11 +1,31 @@
+"use client";
 import { IUserBooking } from "@/types/booking";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
-import { Eye, Link, Star } from "lucide-react";
+import { Star } from "lucide-react";
+import { initPayment } from "@/services/payment";
+import { toast } from "sonner";
 
 const BookingCard = ({ booking }: { booking: IUserBooking }) => {
+  const handlePayment = async (data: {
+    total_amount: number;
+    tran_id: string;
+  }) => {
+    const payment = await initPayment(data);
+    if (payment.success) {
+      // Redirect to payment gateway
+      console.log("Payment successful", payment);
+      // Handle success payment
+      // Update booking status to paid
+      // Send confirmation email to tutor and user
+    } else {
+      toast.error("Something went wrong");
+    }
+  };
+  console.log(booking);
+
   return (
     <div>
       <Card className="overflow-hidden hover:shadow-lg transition-shadow flex gap-4 my-4">
@@ -22,14 +42,19 @@ const BookingCard = ({ booking }: { booking: IUserBooking }) => {
           />
         </CardHeader>
         <CardContent className="p-6">
-          <h3 className="text-lg font-semibold mb-2 flex gap-4">
+          <h3 className="text-lg font-semibold mb-1 flex gap-4">
             {booking.tutorId.firstName} {booking.tutorId.lastName}{" "}
             <div className="flex items-center gap-2">
               <Star className="h-4 w-4 text-yellow-400" />
               <span> 5.0</span>
             </div>
           </h3>
-          <div className="space-y-2 text-sm text-muted-foreground"></div>
+          <h3 className="text-lg font-semibold mb-1 flex gap-4">
+            Total Amount :{" "}
+            {booking.numberOfSession * booking.tutorId.hourlyRate}
+          </h3>
+
+          <div className="my-2 text-sm text-muted-foreground"></div>
           <div className="mt-4 flex items-center justify-between w-full gap-7 mb-7">
             <span className="text-lg font-semibold">
               status : {booking.status}
@@ -43,14 +68,18 @@ const BookingCard = ({ booking }: { booking: IUserBooking }) => {
             )}
             {booking.status === "confirmed" &&
               (booking.paid ? (
-                <Button>
-                  {" "}
-                  <Link href={`/dashboard/booking/confirm/${booking._id}`}>
-                    Pay Now
-                  </Link>
-                </Button>
-              ) : (
                 <Button>Booked Successfully</Button>
+              ) : (
+                <Button
+                  onClick={() =>
+                    handlePayment({
+                      total_amount: 300,
+                      tran_id: booking._id,
+                    })
+                  }
+                >
+                  Pay Now
+                </Button>
               ))}
             {booking.status === "cancelled" && (
               <Button>Booking is cancelled</Button>
@@ -62,9 +91,9 @@ const BookingCard = ({ booking }: { booking: IUserBooking }) => {
             )}
             {booking.status === "confirmed" &&
               (booking.paid ? (
-                <span>Your booking request is confirmed you can pay now</span>
+                <span>Booked Successfully !!</span>
               ) : (
-                <Button>Booked Successfully</Button>
+                <span>Your booking request is confirmed you can pay now</span>
               ))}
             {booking.status === "cancelled" && (
               <span>Tutor cancelled your booking!!</span>

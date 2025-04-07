@@ -42,7 +42,7 @@ export const middleware = async (request: NextRequest) => {
 export const config = {
   matcher: [
     "/login",
-    "/register/tutor",
+    "/register",
     "/admin",
     "/admin/:page",
     "/user",

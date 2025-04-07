@@ -1,5 +1,5 @@
 "use client";
-import ManangeBooking from "@/components/modules/Booking/ManageBooking";
+
 import ManangeReview from "@/components/modules/review/ManageBooking";
 import { useUser } from "@/context/UserContext";
 import { getTutorReview } from "@/services/review";
@@ -9,7 +9,6 @@ import React, { useEffect, useState } from "react";
 const ReviewPage = () => {
   const { user } = useUser();
   const [booking, setBooking] = useState(null);
-  const [tutor, setTutor] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +18,6 @@ const ReviewPage = () => {
         // Step 1: Fetch tutor info
         const tutorData = await getTutorFromUser(user.userId);
         if (tutorData) {
-          setTutor(tutorData?.data);
           console.log(tutorData);
           // Step 2: Fetch availability only after tutor data is available
           const bookingData = await getTutorReview(tutorData?.data._id);

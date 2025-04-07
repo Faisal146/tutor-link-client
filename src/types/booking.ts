@@ -28,12 +28,14 @@ export interface IUserBooking {
     lastName: string;
     email: string;
     profile: string;
+    hourlyRate: number;
   };
   availability: {
     dayOfWeek: string;
     startTime: string;
     endTime: string;
   };
+  numberOfSession: number;
   paid: boolean;
   date: Date;
   status: "pending" | "confirmed" | "cancelled";

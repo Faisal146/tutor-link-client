@@ -10,17 +10,8 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { ITutor } from "@/types";
 import { toast } from "sonner";
-import { createAvailability } from "@/services/availability";
 import { Textarea } from "@/components/ui/textarea";
 import { createReview } from "@/services/review";
 
@@ -42,7 +33,7 @@ const CreateReviewModel = ({ tutor }: { tutor: ITutor }) => {
   const {
     register,
     handleSubmit,
-    setValue,
+
     formState: { errors },
   } = useForm({
     resolver: zodResolver(reviewSchema),

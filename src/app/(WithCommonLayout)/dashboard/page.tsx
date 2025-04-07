@@ -1,13 +1,8 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import BookingCard from "@/components/ui/core/BookingCard";
 import { useUser } from "@/context/UserContext";
 import { getUserBookings } from "@/services/booking";
-import { getTutorFromUser } from "@/services/tutor";
 import { IUserBooking } from "@/types/booking";
-import { Eye, GraduationCap, Link, Star } from "lucide-react";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 const DashboardPage = () => {
@@ -37,7 +32,9 @@ const DashboardPage = () => {
     <div className="max-w-6xl mx-auto">
       <h1 className="text-3xl my-10">My Booking</h1>
       {bookings && bookings.length > 0 ? (
-        bookings.map((booking) => <BookingCard booking={booking}></BookingCard>)
+        bookings.map((booking) => (
+          <BookingCard key={booking._id} booking={booking}></BookingCard>
+        ))
       ) : (
         <div className="text-center py-12">
           <p>No upcoming bookings found.</p>

@@ -73,11 +73,12 @@ export default async function Home() {
             Join thousands of students achieving their academic goals with
             TutorLink.
           </p>
-          <div className="grid grid-cols-4 gap-6">
-            {tutors?.data?.result.slice(0, 3).map((tutor: ITutor) => (
+          <div className="grid md:grid-cols-4 grid-cols-1 gap-6">
+            {tutors?.data?.result.slice(0, 4).map((tutor: ITutor) => (
               <TutorCard key={tutor._id} tutor={tutor}></TutorCard>
             ))}
           </div>{" "}
+          <Link href={"/tutors"}></Link>
           <Button className="text-center mt-7">Browse All Tutors</Button>
         </div>
       </section>
